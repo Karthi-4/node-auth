@@ -17,4 +17,4 @@ app.use(cookieParser());
 app.use("/api/auth", authRoutes);
 
 const PORT = 4500 || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(4500, () => console.log(`Server running on port ${PORT}`));

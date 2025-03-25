@@ -26,6 +26,7 @@ router.post("/register", async (req, res) => {
 // Login user
 router.post("/login", async (req, res) => {
  const { email, password } = req.body;
+ console.log(email, password);
  try {
   const user = await User.findOne({ email });
   if (!user) return res.status(400).json({ message: "Invalid email or password" });
@@ -33,7 +34,7 @@ router.post("/login", async (req, res) => {
   const isMatch = await user.matchPassword(password);
   if (!isMatch) return res.status(400).json({ message: "Invalid email or password" });
 
-  const token = jwt.sign({ id: user._id }, fivestars, { expiresIn: "1h" });
+  const token = jwt.sign({ id: user._id }, "fivestars", { expiresIn: "1h" });
 
   res.cookie("token", token, {
    httpOnly: true,
@@ -57,12 +58,12 @@ router.post("/logout", (req, res) => {
 
 // GET all users
 router.get("/users", async (req, res) => {
-    try {
-      const users = await User.find().select("-password"); // Exclude passwords
-      res.json(users);
-    } catch (error) {
-      res.status(500).json({ message: "Server error", error: error.message });
-    }
-  });
+ try {
+  const users = await User.find().select("-password"); // Exclude passwords
+  res.json(users);
+ } catch (error) {
+  res.status(500).json({ message: "Server error", error: error.message });
+ }
+});
 
 module.exports = router;
